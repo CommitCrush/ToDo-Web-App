@@ -1,4 +1,4 @@
-import { InferSchemaType } from "mongoose";
+import InferSchemaType from "mongoose";
 import { userSchema } from "../models/user";
 import { Permission } from "../types/psermissions";
 

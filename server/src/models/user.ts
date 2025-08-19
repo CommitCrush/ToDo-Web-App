@@ -1,5 +1,7 @@
-import mongoose, { Schema, model, InferSchemaType } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import validator from "validator";
+import Document from "mongoose";
+//import bcrypt from "bcryptjs";
 import { hash } from "bcrypt-ts";
 
 //1. Schema erstellen
@@ -69,7 +71,9 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 // mongoose definiert verschiedene Events, wo man eine Callback-Funktion hinzufügen kann//#### Bereinigung
-userSchema.pre("save", async function (next) {
+
+
+userSchema.pre("save", async function (this: Document & { email: string; password: string; isModified: (field: string) => boolean }, next: () => void) {
   this.email = validator.trim(this.email);
   this.email =
     validator.normalizeEmail(this.email, {

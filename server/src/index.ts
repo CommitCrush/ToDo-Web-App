@@ -1,9 +1,9 @@
-// import { connect } from "./utils/db.js";
+// import { connect } from "./utils/db.js.js";
 import express from "express";
-import config from "./config/config";
-import { errorHandling } from "./middleware/errorHandling";
-// import authRoutes from "./routes/authRouter.js";
-// import userRoutes from "./routes/userRouter.js";
+import config from "./config/config.js";
+import { errorHandling } from "./middleware/errorHandling.js";
+// import authRoutes from "./routes/authRouter.js.js";
+// import userRoutes from "./routes/userRouter.js.js";
 import cookieParser from "cookie-parser";
 
 import cors from "cors";

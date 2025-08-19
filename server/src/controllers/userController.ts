@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
 import User from "../models/user.js";
-import mongoose from "mongoose";
-import { UserType } from "../types/user";
+import { Types } from "mongoose";
+import { UserType } from "../types/user.js";
 
 /*****
  * @Get All Users
@@ -38,7 +38,7 @@ export const getUserById = async (
     if (!id) {
       throw createHttpError(404, "Benutzer nicht gefunden");
     }
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!Types.ObjectId.isValid(id)) {
       throw createHttpError(404, "Ungültiger Benutzer-Id");
     }
     const user = await User.findById(id).select("-password");
@@ -74,7 +74,7 @@ export const updateUserById = async (
   try {
     if (!id) throw createHttpError(400, "Benutzer-Id nicht gefunden");
 
-    if (!mongoose.Types.ObjectId.isValid(id))
+    if (!Types.ObjectId.isValid(id))
       throw createHttpError(400, "Ungültiger Benutzer-Id");
 
     const user = await User.findById(id);
@@ -104,7 +104,7 @@ export const deleteUserById = async (
     if (!id) {
       throw createHttpError(400, "Benutzer-Id gibt es nicht");
     }
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!Types.ObjectId.isValid(id)) {
       throw createHttpError(400, "Ungültiger Benutzer-Id ");
     }
     await User.findByIdAndDelete(id);
