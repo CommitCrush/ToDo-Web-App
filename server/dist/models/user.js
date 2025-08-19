@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import validator from "validator";
+//import bcrypt from "bcryptjs";
 import { hash } from "bcrypt-ts";
 //1. Schema erstellen
 export const userSchema = new Schema({

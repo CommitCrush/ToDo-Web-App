@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc ",
-    "start": "node ./dist/index.js",
-    "dev": "node --loader ts-node/esm src/index.ts"
+    "watch": "tsc --watch",
+    "start": "node --watch dist/index.js",
+    "dev": "concurrently \"npm run watch\" \"npm run start\""
   },
   "keywords": [],
   "author": "",

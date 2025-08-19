@@ -12,9 +12,5 @@
     "typeRoots": ["./node_modules/@types", "./types"]
   },
 
-  "include": ["src/**/*", "types.ts"],
-
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["src/**/*", "types.ts"]
 }
