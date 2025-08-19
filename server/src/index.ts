@@ -1,7 +1,7 @@
 // import { connect } from "./utils/db.js";
 import express from "express";
-import config from "./config/config.js";
-import { errorHandling } from "./middleware/errorHandling.js";
+import config from "./config/config";
+import { errorHandling } from "./middleware/errorHandling";
 // import authRoutes from "./routes/authRouter.js";
 // import userRoutes from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
