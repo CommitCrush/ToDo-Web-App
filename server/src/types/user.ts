@@ -1,6 +1,6 @@
 import {InferSchemaType} from "mongoose";
 import { userSchema } from "../models/user.js";
-import { Permission } from "../types/psermissions.js";
+import { Permission } from "./permissions.js";
 
 //Usertype funktioniert jetzt überall: JWT, middleware, req.user, usw.
 
