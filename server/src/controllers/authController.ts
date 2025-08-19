@@ -76,7 +76,7 @@ export const login = async (
     }) as JwtPayload;
 
     if (!token) {
-      throw createHttpError(404, "Ungültiger Kredential");
+      throw createHttpError(404, "Ungültiger Token");
     }
     // Token an den Frontend in einer Cookie schicken
     // Access Token + Cookie
