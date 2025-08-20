@@ -1,5 +1,6 @@
 // Common Components
 export { default as LoadingSpinner } from './common/LoadingSpinner';
+export { default as Footer } from './Footer';
 
 // Todo Components
 export { default as TodoHeader } from './todo/TodoHeader';
