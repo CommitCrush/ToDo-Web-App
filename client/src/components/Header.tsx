@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hook/UseAuth';
+import { useAuth } from '../hooks/UseAuth';
 
 interface HeaderProps {
   onLogout?: () => void;

@@ -1,9 +1,10 @@
 import { useState, useEffect, type ReactNode } from "react";
-import AuthContext from "../types/Auth";
+import AuthContext, { type User } from "../types/Auth";
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -12,8 +13,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
           `${import.meta.env.VITE_API_URL}/auth/profile`,
           { credentials: "include" }
         );
-        setIsLoggedIn(res.ok);
+        
+        if (res.ok) {
+          const userData = await res.json();
+          setUser(userData);
+          setIsLoggedIn(true);
+        } else {
+          setUser(null);
+          setIsLoggedIn(false);
+        }
       } catch {
+        setUser(null);
         setIsLoggedIn(false);
       } finally {
         setLoading(false);
@@ -23,7 +33,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ isLoggedIn, loading, user, setIsLoggedIn, setUser }}>
       {children}
     </AuthContext.Provider>
   );

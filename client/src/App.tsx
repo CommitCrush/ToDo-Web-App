@@ -10,7 +10,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Todo from "./pages/Todo";
 import Header from "./components/Header";
 import AuthProvider from "./context/AuthContext";
-import { useAuth } from "./hook/UseAuth";
+import { useAuth } from "./hooks/UseAuth";
 import About from "./pages/About";
 
 function AppRoutes() {

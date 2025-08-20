@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hook/UseAuth";
+import { useAuth } from "../hooks/UseAuth";
 import LoginForm from "../components/Login";
 
 interface HomeProps {
@@ -8,7 +8,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onLogout }) => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
 
   if (!isLoggedIn) {
     // Show login form for non-authenticated users
@@ -17,7 +17,7 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-slate-800 mb-4">
-              Welcome to TaskFlow
+              Welcome to TaskFlow 
             </h1>
             <p className="text-lg text-slate-600">
               Please login to manage your tasks
@@ -37,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
       <div className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-slate-800 mb-6 animate-fade-in">
-            Welcome Back! 👋
+            Welcome Back! 👋 {user?.username}
           </h1>
           <p className="text-xl text-slate-600 mb-8">
             Ready to boost your productivity today?
