@@ -7,7 +7,7 @@ interface HomeProps {
   onLogout: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ onLogout }) => {
+const Home: React.FC<HomeProps> = ({}) => {
   const { isLoggedIn, setIsLoggedIn, user } = useAuth();
 
   if (!isLoggedIn) {
@@ -37,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
       <div className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-slate-800 mb-6 animate-fade-in">
-            Welcome Back! 👋 {user?.username}
+            Welcome! 👋 {user?.username}
           </h1>
           <p className="text-xl text-slate-600 mb-8">
             Ready to boost your productivity today?
