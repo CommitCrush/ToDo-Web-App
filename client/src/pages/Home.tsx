@@ -1,5 +1,10 @@
+import React from "react";
 
-const Home = () => {
+interface HomeProps {
+  onLogout: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onLogout }) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center">

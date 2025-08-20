@@ -8,7 +8,10 @@ import Home from "./pages/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import VerifyEmail from "./pages/VerifyEmail";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import Header from "./components/Header";
+import AuthProvider from "./context/AuthContext";
+import { useAuth } from "./hook/UseAuth";
+
 
 function AppRoutes() {
   const { isLoggedIn, loading, setIsLoggedIn } = useAuth();
@@ -18,43 +21,51 @@ function AppRoutes() {
   }
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          isLoggedIn ? (
-            <Navigate to="/home" />
-          ) : (
-            <Login onLogin={() => setIsLoggedIn(true)} />
-          )
-        }
-      />
-      <Route path="/register" element={<Register />} />
-      <Route
-        path="/home"
-        element={
-          isLoggedIn ? (
-            <Home onLogout={() => setIsLoggedIn(false)} />
-          ) : (
-            <Navigate to="/" />
-          )
-        }
-      />
-      <Route path="/verify" element={<VerifyEmail />} />
-    </Routes>
+    <>
+      {/* Header ist jetzt außerhalb der Routes und immer sichtbar */}
+      <Header />
+      
+      {/* Main Content Area */}
+      <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <Navigate to="/home" />
+                ) : (
+                  <Login onLogin={() => setIsLoggedIn(true)} />
+                )
+              }
+            />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/home"
+              element={
+                isLoggedIn ? (
+                  <Home onLogout={() => setIsLoggedIn(false)} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+            <Route path="/verify" element={<VerifyEmail />} />
+          </Routes>
+        </div>
+      </main>
+    </>
   );
 }
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
-        <AuthProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </AuthProvider>
-      </div>
+    <div className="min-h-screen bg-gray-100">
+      <AuthProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </AuthProvider>
     </div>
   );
 }

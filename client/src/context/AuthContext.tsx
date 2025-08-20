@@ -1,5 +1,5 @@
 import { useState, useEffect, type ReactNode } from "react";
-import { AuthContext, type AuthContextType } from "../types/Auth";
+import AuthContext from "../types/Auth";
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,7 +9,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const checkLoginStatus = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/auth/profile`,
+          `${import.meta.env.VITE_API_URL}/auth/profile`,
           { credentials: "include" }
         );
         setIsLoggedIn(res.ok);

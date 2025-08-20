@@ -1,9 +1,11 @@
 import { createContext } from "react";
 
-export type AuthContextType = {
+ export type AuthContextType = {
   isLoggedIn: boolean;
   loading: boolean;
   setIsLoggedIn: (val: boolean) => void;
 };
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export default AuthContext;
