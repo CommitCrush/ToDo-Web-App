@@ -34,12 +34,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         setMessage(data.message || " login failed ");
         return;
       }
+      console.log("Login successful");
+      
       setEmail("");
       setPassword("");
       onLogin();
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
-      setMessage("Server Fehler");
+      console.log("Login error:", error);
+      
     }
   };
 

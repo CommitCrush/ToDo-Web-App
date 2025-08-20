@@ -68,6 +68,7 @@ export const login = async (
     if (!comparePassword) {
       throw createHttpError(401, "Email oder Password ist falsch!");
     }
+console.log("login fehlgeschlagen", loggedUser);
 
     // Erstellen ein JWT und  an den req.user schicken
     const token = createToken({

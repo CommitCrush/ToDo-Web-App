@@ -49,6 +49,7 @@ export const login = async (req, res, next) => {
         if (!comparePassword) {
             throw createHttpError(401, "Email oder Password ist falsch!");
         }
+        console.log("login fehlgeschlagen", loggedUser);
         // Erstellen ein JWT und  an den req.user schicken
         const token = createToken({
             _id: loggedUser._id.toString(),

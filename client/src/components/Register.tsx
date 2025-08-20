@@ -34,7 +34,7 @@ function RegisterForm() {
       } else {
         setMessage(data.message || "Fehler bei der Registrierung.");
       }
-    } catch (error) {
+    } catch  {
       setMessage("Serverfehler oder keine Verbindung.");
     }
   };
