@@ -8,10 +8,10 @@ import Home from "./pages/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import VerifyEmail from "./pages/VerifyEmail";
+import TodoList from "./pages/Todo";
 import Header from "./components/Header";
 import AuthProvider from "./context/AuthContext";
 import { useAuth } from "./hook/UseAuth";
-
 
 function AppRoutes() {
   const { isLoggedIn, loading, setIsLoggedIn } = useAuth();
@@ -22,38 +22,68 @@ function AppRoutes() {
 
   return (
     <>
-      {/* Header ist jetzt außerhalb der Routes und immer sichtbar */}
       <Header />
       
-      {/* Main Content Area */}
-      <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                isLoggedIn ? (
-                  <Navigate to="/home" />
-                ) : (
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/home" />
+            ) : (
+              <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
+                <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
                   <Login onLogin={() => setIsLoggedIn(true)} />
-                )
-              }
-            />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/home"
-              element={
-                isLoggedIn ? (
-                  <Home onLogout={() => setIsLoggedIn(false)} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route path="/verify" element={<VerifyEmail />} />
-          </Routes>
-        </div>
-      </main>
+                </div>
+              </main>
+            )
+          }
+        />
+        <Route 
+          path="/register" 
+          element={
+            <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
+              <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
+                <Register />
+              </div>
+            </main>
+          } 
+        />
+        <Route
+          path="/home"
+          element={
+            isLoggedIn ? (
+              <main className="min-h-screen bg-gray-100">
+                <Home onLogout={() => setIsLoggedIn(false)} />
+              </main>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/todos"
+          element={
+            isLoggedIn ? (
+              <main className="min-h-screen bg-gray-100">
+                <TodoList />
+              </main>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route 
+          path="/verify" 
+          element={
+            <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
+              <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
+                <VerifyEmail />
+              </div>
+            </main>
+          } 
+        />
+      </Routes>
     </>
   );
 }

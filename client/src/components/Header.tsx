@@ -6,16 +6,39 @@ const Header = () => {
   const [username, setUsername] = useState<string>('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if user is authenticated by looking for token in localStorage
+  // Function to check authentication status
+  const checkAuthStatus = () => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     
     if (token && user) {
       setIsAuthenticated(true);
-      const userData = JSON.parse(user);
-      setUsername(userData.username || userData.email);
+      try {
+        const userData = JSON.parse(user);
+        setUsername(userData.username || userData.email?.split('@')[0] || 'User');
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUsername('User');
+      }
+    } else {
+      setIsAuthenticated(false);
+      setUsername('');
     }
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+    
+    // Listen for storage changes (when user logs in/out in another tab)
+    const handleStorageChange = () => {
+      checkAuthStatus();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -32,7 +55,7 @@ const Header = () => {
         <div className="flex justify-between items-center">
           {/* Logo/Brand */}
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold hover:text-blue-200 transition-colors">
+            <Link to={isAuthenticated ? "/home" : "/"} className="text-xl font-bold hover:text-blue-200 transition-colors">
               ToDo App
             </Link>
           </div>
@@ -40,7 +63,7 @@ const Header = () => {
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6">
             <Link 
-              to="/" 
+              to={isAuthenticated ? "/home" : "/"} 
               className="hover:text-blue-200 transition-colors"
             >
               Home
@@ -51,7 +74,7 @@ const Header = () => {
                 to="/todos" 
                 className="hover:text-blue-200 transition-colors"
               >
-                To-Do List
+                My Todos
               </Link>
             )}
           </nav>
@@ -60,7 +83,9 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm">Welcome, {username}!</span>
+                <span className="text-sm bg-blue-700 px-3 py-1 rounded">
+                  Hello, {username}!
+                </span>
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded transition-colors"
