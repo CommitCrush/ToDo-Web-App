@@ -1,15 +1,14 @@
-// server/src/controllers/todoController.ts
-import Todo from '../models/todo';
+import Todo from '../models/todo.js';
 // 1. Hole alle To-Dos für den authentifizierten Benutzer
 export const getTodos = async (req, res) => {
     try {
-        // req.user?.id kommt von der `protect` Middleware
-        const userId = req.user?.id;
+        // req.user?._id kommt von der `verifyToken` Middleware
+        const userId = req.user?._id;
         if (!userId) {
             return res.status(401).json({ message: 'Nicht autorisiert' });
         }
         // Finde alle To-Dos, die dem Benutzer zugeordnet sind
-        const todos = await Todo.find({ user: userId });
+        const todos = await Todo.find({ user: userId }).sort({ createdAt: -1 });
         res.status(200).json(todos);
     }
     catch (error) {
@@ -19,9 +18,9 @@ export const getTodos = async (req, res) => {
 };
 // 2. Füge ein neues To-Do hinzu
 export const addTodo = async (req, res) => {
-    const { text } = req.body;
+    const { text, description, priority, dueDate, tags } = req.body;
     try {
-        const userId = req.user?.id;
+        const userId = req.user?._id;
         if (!userId) {
             return res.status(401).json({ message: 'Nicht autorisiert' });
         }
@@ -29,6 +28,10 @@ export const addTodo = async (req, res) => {
         // und verknüpfe es mit dem angemeldeten Benutzer
         const newTodo = new Todo({
             text,
+            description,
+            priority: priority || 'medium',
+            dueDate: dueDate ? new Date(dueDate) : undefined,
+            tags: tags || [],
             user: userId
         });
         await newTodo.save();
@@ -41,14 +44,30 @@ export const addTodo = async (req, res) => {
 // 3. Aktualisiere ein bestehendes To-Do
 export const updateTodo = async (req, res) => {
     const { id } = req.params;
-    const { completed } = req.body;
+    const { text, description, completed, status, priority, dueDate, tags } = req.body;
     try {
-        const userId = req.user?.id;
+        const userId = req.user?._id;
         if (!userId)
             return res.status(401).json({ message: 'Nicht autorisiert' });
+        // Prepare update object
+        const updateData = {};
+        if (text !== undefined)
+            updateData.text = text;
+        if (description !== undefined)
+            updateData.description = description;
+        if (completed !== undefined)
+            updateData.completed = completed;
+        if (status !== undefined)
+            updateData.status = status;
+        if (priority !== undefined)
+            updateData.priority = priority;
+        if (dueDate !== undefined)
+            updateData.dueDate = dueDate ? new Date(dueDate) : null;
+        if (tags !== undefined)
+            updateData.tags = tags;
         // Finde das To-Do anhand der ID und des Benutzers, um sicherzustellen,
         // dass nur der Besitzer es bearbeiten kann
-        const todo = await Todo.findOneAndUpdate({ _id: id, user: userId }, { completed }, { new: true, runValidators: true });
+        const todo = await Todo.findOneAndUpdate({ _id: id, user: userId }, updateData, { new: true, runValidators: true });
         if (!todo) {
             return res.status(404).json({ message: 'To-Do nicht gefunden oder nicht berechtigt' });
         }
@@ -62,7 +81,7 @@ export const updateTodo = async (req, res) => {
 export const deleteTodo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userId = req.user?.id;
+        const userId = req.user?._id;
         if (!userId)
             return res.status(401).json({ message: 'Nicht autorisiert' });
         // Finde das To-Do und lösche es, aber nur wenn es dem angemeldeten Benutzer gehört
@@ -80,7 +99,7 @@ export const deleteTodo = async (req, res) => {
 export const toggleTodoCompletion = async (req, res) => {
     const { id } = req.params;
     try {
-        const userId = req.user?.id;
+        const userId = req.user?._id;
         if (!userId)
             return res.status(401).json({ message: 'Nicht autorisiert' });
         // Finde das To-Do und toggel den Status

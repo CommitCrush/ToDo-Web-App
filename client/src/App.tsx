@@ -5,68 +5,71 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./components/Login";
 import Register from "./components/Register";
 import VerifyEmail from "./pages/VerifyEmail";
+import Todo from "./pages/Todo";
 import Header from "./components/Header";
 import AuthProvider from "./context/AuthContext";
 import { useAuth } from "./hook/UseAuth";
-
+import About from "./pages/About";
 
 function AppRoutes() {
   const { isLoggedIn, loading, setIsLoggedIn } = useAuth();
 
   if (loading) {
-    return <p className="text-center text-xl p-6">Lade .....</p>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-xl text-slate-600">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      {/* Header ist jetzt außerhalb der Routes und immer sichtbar */}
-      <Header />
+    <div className="min-h-screen bg-slate-50">
+      <Header onLogout={() => setIsLoggedIn(false)} />
       
-      {/* Main Content Area */}
-      <main className="min-h-screen bg-gray-200 flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                isLoggedIn ? (
-                  <Navigate to="/home" />
-                ) : (
-                  <Login onLogin={() => setIsLoggedIn(true)} />
-                )
-              }
-            />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/home"
-              element={
-                isLoggedIn ? (
-                  <Home onLogout={() => setIsLoggedIn(false)} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route path="/verify" element={<VerifyEmail />} />
-          </Routes>
-        </div>
-      </main>
-    </>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home onLogout={() => setIsLoggedIn(false)} />}
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<VerifyEmail />} />
+        <Route
+          path="/todos"
+          element={
+            isLoggedIn ? (
+              <Todo />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            isLoggedIn ? (
+              <About />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+      </Routes>
+    </div>
   );
 }
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
-    </div>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
 

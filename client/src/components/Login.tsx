@@ -47,46 +47,56 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-sm mx-auto mt-10 flex flex-col gap-2"
-    >
-      <h2 className="text-xl text-center font-bold">Login</h2>
-      <input
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        type="email"
-        placeholder="E-Mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <br />
-      <input
-        type="password"
-        placeholder="Passwort"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      />
-      <br />
-      <button
-        type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-colors duration-200"
+    <div className="animate-fade-in">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
       >
-        Einloggen
-      </button>
-      <p className="text-sm text-center text-gray-700">
-        Noch kein Konto?{" "}
-        <Link to="/register" className="text-blue-600 hover:underline">
-          Jetzt registrieren
-        </Link>
-      </p>
+        <h2 className="text-3xl text-center font-bold text-slate-800 mb-8">Welcome Back</h2>
+        
+        <div>
+          <input
+            className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg transition-all duration-200"
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg transition-all duration-200"
+          />
+        </div>
+        
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-lg"
+        >
+          Sign In ✨
+        </button>
+        
+        <p className="text-center text-slate-600">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+            Create one here
+          </Link>
+        </p>
 
-      {message && (
-        <p className="text-center text-sm text-amber-500">{message}</p>
-      )}
-    </form>
+        {message && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-center">
+            {message}
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 

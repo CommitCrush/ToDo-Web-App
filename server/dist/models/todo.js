@@ -7,10 +7,31 @@ const todoSchema = new Schema({
         required: [true, 'Ein Text für das To-Do ist erforderlich.'],
         trim: true,
     },
+    description: {
+        type: String,
+        trim: true,
+    },
     completed: {
         type: Boolean,
         default: false,
     },
+    status: {
+        type: String,
+        enum: ['todo', 'in-progress', 'done'],
+        default: 'todo',
+    },
+    priority: {
+        type: String,
+        enum: ['low', 'medium', 'high'],
+        default: 'medium',
+    },
+    dueDate: {
+        type: Date,
+    },
+    tags: [{
+            type: String,
+            trim: true,
+        }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Wichtiger Verweis auf das 'User'-Modell

@@ -1,98 +1,89 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useAuth } from '../hook/UseAuth';
 
-const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState<string>('');
+interface HeaderProps {
+  onLogout?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onLogout }) => {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if user is authenticated by looking for token in localStorage
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    
-    if (token && user) {
-      setIsAuthenticated(true);
-      const userData = JSON.parse(user);
-      setUsername(userData.username || userData.email);
+  const handleLogout = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (onLogout) onLogout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
     }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setIsAuthenticated(false);
-    setUsername('');
-    navigate('/');
   };
 
   return (
-    <header className="bg-blue-600 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-3">
+    <header className="bg-gradient-to-r from-slate-800 to-slate-900 text-white shadow-xl">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo/Brand */}
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold hover:text-blue-200 transition-colors">
-              ToDo App
+            <Link to="/" className="text-2xl font-bold hover:text-blue-300 transition-all duration-300 flex items-center">
+              <span className="bg-blue-500 text-white px-3 py-1 rounded-lg mr-2">📝</span>
+              TaskFlow
             </Link>
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-8">
             <Link 
               to="/" 
-              className="hover:text-blue-200 transition-colors"
+              className="hover:text-blue-300 transition-all duration-200 font-medium"
             >
               Home
             </Link>
+            <Link 
+              to="/about" 
+              className="hover:text-blue-300 transition-all duration-200 font-medium"
+            >
+              About
+            </Link>
             
-            {isAuthenticated && (
+            {isLoggedIn && (
               <Link 
                 to="/todos" 
-                className="hover:text-blue-200 transition-colors"
+                className="hover:text-blue-300 transition-all duration-200 font-medium"
               >
-                To-Do List
+                Todos
               </Link>
             )}
           </nav>
 
           {/* Auth Section */}
           <div className="flex items-center space-x-4">
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-sm">Welcome, {username}!</span>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition-all duration-200 font-medium"
+              >
+                Logout
+              </button>
             ) : (
-              <div className="flex items-center space-x-2">
-                <Link
-                  to="/login"
-                  className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded transition-colors"
+              <div className="flex items-center space-x-3">
+                <Link 
+                  to="/" 
+                  className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-all duration-200 font-medium"
                 >
                   Login
                 </Link>
-                <Link
-                  to="/register"
-                  className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded border border-blue-400 transition-colors"
+                <Link 
+                  to="/register" 
+                  className="border border-blue-400 hover:bg-blue-500 px-4 py-2 rounded-lg transition-all duration-200 font-medium"
                 >
                   Register
                 </Link>
               </div>
             )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button className="text-white focus:outline-none">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>

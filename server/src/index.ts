@@ -4,6 +4,7 @@ import config from "./config/config.js";
 import { errorHandling } from "./middleware/errorHandling.js";
 import authRoutes from "./routes/authRouter.js";
 import userRoutes from "./routes/userRouter.js";
+import todoRoutes from "./routes/todoRouter.js";
 import cookieParser from "cookie-parser";
 
 import cors from "cors";
@@ -35,6 +36,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/todos", todoRoutes);
 
 // Beispiel-Route
 app.get("/", (_req, res) => {

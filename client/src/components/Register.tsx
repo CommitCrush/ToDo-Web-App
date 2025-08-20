@@ -40,54 +40,83 @@ function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold text-center">Registrieren</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-slate-800 mb-4">
+            Join TaskFlow
+          </h1>
+          <p className="text-lg text-slate-600">
+            Create your account to get started
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <h2 className="text-3xl font-bold text-center text-slate-800 mb-8">Create Account</h2>
 
-      <input
-        name="username"
-        type="text"
-        placeholder="Benutzername"
-        value={form.username}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      />
+            <div>
+              <input
+                name="username"
+                type="text"
+                placeholder="Username"
+                value={form.username}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg transition-all duration-200"
+              />
+            </div>
 
-      <input
-        name="email"
-        type="email"
-        placeholder="@-email"
-        value={form.email}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      />
+            <div>
+              <input
+                name="email"
+                type="email"
+                placeholder="Email Address"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg transition-all duration-200"
+              />
+            </div>
 
-      <input
-        name="password"
-        type="password"
-        placeholder="Passwort"
-        value={form.password}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      />
+            <div>
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg transition-all duration-200"
+              />
+            </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
-        Registrieren
-      </button>
-      <p className="text-sm text-center text-gray-700">
-        Bereist registriert?{" "}
-        <Link to="/dashboard" className="text-blue-600 hover:underline">
-          Jetzt einlogen
-        </Link>
-      </p>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-lg"
+            >
+              Create Account ✨
+            </button>
+            
+            <p className="text-center text-slate-600">
+              Already have an account?{" "}
+              <Link to="/" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                Sign in here
+              </Link>
+            </p>
 
-      {message && <p className="text-sm text-center">{message}</p>}
-    </form>
+            {message && (
+              <div className={`px-4 py-3 rounded-xl text-center ${
+                message.includes('erfolgreich') 
+                  ? 'bg-green-50 border border-green-200 text-green-700'
+                  : 'bg-red-50 border border-red-200 text-red-700'
+              }`}>
+                {message}
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
 
