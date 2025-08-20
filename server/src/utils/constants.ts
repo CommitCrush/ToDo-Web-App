@@ -1,2 +1,0 @@
-export const DEFAULT_ROLE = ["USER"];
-export const DEFAULT_PERMISSIONS = ["VIEWER_USER", "UPDATE_USER"];
